@@ -13,7 +13,7 @@ export class Position extends Document {
   @Prop({ required: true })
   token: number;
 
-  @Prop({required: true})
+  @Prop({ required: true })
   amount: number;
 
   @Prop({ required: true })
