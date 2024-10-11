@@ -6,11 +6,13 @@ import { PositionRepository } from './repository/position.repository';
 @Injectable()
 export class PositionService {
   constructor(private readonly positionRepository: PositionRepository) {}
-  
+
   async create(createPositionDto: CreatePositionDto) {
     return (await this.positionRepository.create(createPositionDto)).toObject();
+  }
 
-    // return 'This action adds a new position';
+  async remove(position_id: number) {
+    return (await this.positionRepository.delete(position_id));
   }
 
   findAll() {
@@ -23,9 +25,5 @@ export class PositionService {
 
   update(id: number, updatePositionDto: UpdatePositionDto) {
     return `This action updates a #${id} position`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} position`;
   }
 }
