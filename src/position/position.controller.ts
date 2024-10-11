@@ -15,7 +15,7 @@ import { UpdatePositionDto } from './dto/update-position.dto';
 export class PositionController {
   constructor(private readonly positionService: PositionService) {}
 
-  @Post()
+  @Post('/open_position')
   create(@Body() createPositionDto: CreatePositionDto) {
     return this.positionService.create(createPositionDto);
   }

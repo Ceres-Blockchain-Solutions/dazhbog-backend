@@ -1,11 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { CreatePositionDto } from './dto/create-position.dto';
 import { UpdatePositionDto } from './dto/update-position.dto';
+import { PositionRepository } from './repository/position.repository';
 
 @Injectable()
 export class PositionService {
-  create(createPositionDto: CreatePositionDto) {
-    return 'This action adds a new position';
+  constructor(private readonly positionRepository: PositionRepository) {}
+  
+  async create(createPositionDto: CreatePositionDto) {
+    return (await this.positionRepository.create(createPositionDto)).toObject();
+
+    // return 'This action adds a new position';
   }
 
   findAll() {
