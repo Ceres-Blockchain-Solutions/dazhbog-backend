@@ -40,7 +40,7 @@ export class PositionRepository {
   }
 
   async delete(position_id: number) {
-    return await this.positionModel.deleteOne({position_id});
+    return await this.positionModel.findOneAndDelete({position_id});
   }
 
   async findAll(): Promise<Position[]> {

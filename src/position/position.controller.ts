@@ -15,15 +15,15 @@ import { UpdatePositionDto } from './dto/update-position.dto';
 export class PositionController {
   constructor(private readonly positionService: PositionService) {}
 
-  // @Post('/open_position')
-  // create(@Body() createPositionDto: CreatePositionDto) {
-  //   return this.positionService.create(createPositionDto);
-  // }
+  @Post('/open-position')
+  create(@Body() createPositionDto: CreatePositionDto) {
+    return this.positionService.create(createPositionDto);
+  }
 
-  // @Delete('/close-position:id')
-  // remove(@Param('position_id') position_id: number) {
-  //   return this.positionService.remove(position_id);
-  // }
+  @Delete('/close-position:position_id')
+  remove(@Param('position_id') position_id: number) {
+    return this.positionService.remove(position_id);
+  }
 
   @Get()
   findAll() {
