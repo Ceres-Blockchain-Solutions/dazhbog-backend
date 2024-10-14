@@ -26,10 +26,9 @@ export class PositionRepository {
     const updatedPosition = await this.positionModel.findOneAndUpdate(
       { position_id },
       {
-          amount: tempPosition.amount + updatePositionDto.amount,
-          position_value:
-            tempPosition.position_value +
-            updatePositionDto.amount * currentPrice,
+        amount: tempPosition.amount + updatePositionDto.amount,
+        position_value:
+          tempPosition.position_value + updatePositionDto.amount * currentPrice,
       },
       { new: true },
     );
@@ -38,7 +37,7 @@ export class PositionRepository {
   }
 
   async delete(position_id: number) {
-    return await this.positionModel.findOneAndDelete({position_id});
+    return await this.positionModel.findOneAndDelete({ position_id });
   }
 
   async findAll(): Promise<Position[]> {

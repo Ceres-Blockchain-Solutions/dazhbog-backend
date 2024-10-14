@@ -12,7 +12,7 @@ export class PositionService {
   }
 
   async remove(position_id: number) {
-    return (await this.positionRepository.delete(position_id));
+    return await this.positionRepository.delete(position_id);
   }
 
   findAll() {
@@ -24,6 +24,6 @@ export class PositionService {
   }
 
   async update(position_id: number, updatePositionDto: UpdatePositionDto) {
-    return (await this.positionRepository.update(position_id, updatePositionDto));
+    return await this.positionRepository.update(position_id, updatePositionDto);
   }
 }
