@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsNumber, IsBoolean, IsEnum } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsNumber,
+  IsBoolean,
+  IsEnum,
+  IsString,
+} from 'class-validator';
 
 export enum PositionType {
   LONG = 'LONG',
@@ -23,8 +29,16 @@ export class CreatePositionDto {
   amount: number;
 
   @IsNotEmpty()
+  @IsNumber()
+  leverage: number;
+
+  @IsNotEmpty()
   @IsEnum(PositionType)
   position_type: PositionType;
+
+  @IsNotEmpty()
+  @IsString()
+  user: string;
 
   @IsNotEmpty()
   @IsNumber()

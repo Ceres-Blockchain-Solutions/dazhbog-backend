@@ -16,11 +16,17 @@ export class Position extends Document {
   @Prop({ required: true })
   amount: number;
 
+  @Prop({ required: true })
+  leverage: number;
+
   @Prop({ required: false, default: PositionType.LONG })
   position_type: PositionType;
 
   @Prop({ required: true })
   position_value: number;
+
+  @Prop({ required: true })
+  user: string;
 
   @Prop({ required: false, default: Date.now })
   creation_time: number;

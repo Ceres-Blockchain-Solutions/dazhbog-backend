@@ -22,16 +22,32 @@ export class PositionRepository {
     const tempPosition = await this.positionModel.findOne({ position_id });
     //TODO get current price from oracle
     const currentPrice = 100;
+    let updatedPosition;
 
-    const updatedPosition = await this.positionModel.findOneAndUpdate(
-      { position_id },
-      {
-        amount: tempPosition.amount + updatePositionDto.amount,
-        position_value:
-          tempPosition.position_value + updatePositionDto.amount * currentPrice,
-      },
-      { new: true },
-    );
+    //TODO fix adding/removing amount
+    if (tempPosition.amount < updatePositionDto.amount) {
+      updatedPosition = await this.positionModel.findOneAndUpdate(
+        { position_id },
+        {
+          amount: tempPosition.amount + updatePositionDto.amount,
+          position_value:
+            tempPosition.position_value +
+            updatePositionDto.amount * currentPrice,
+        },
+        { new: true },
+      );
+    } else {
+      updatedPosition = await this.positionModel.findOneAndUpdate(
+        { position_id },
+        {
+          amount: tempPosition.amount - updatePositionDto.amount,
+          position_value:
+            tempPosition.position_value -
+            updatePositionDto.amount * currentPrice,
+        },
+        { new: true },
+      );
+    }
 
     return updatedPosition;
   }
