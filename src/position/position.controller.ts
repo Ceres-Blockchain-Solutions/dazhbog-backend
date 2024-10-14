@@ -35,11 +35,11 @@ export class PositionController {
     return this.positionService.findOne(+id);
   }
 
-  @Patch(':id')
+  @Patch('/update-position:position_id')
   update(
-    @Param('id') id: string,
+    @Param('position_id') position_id: number,
     @Body() updatePositionDto: UpdatePositionDto,
   ) {
-    return this.positionService.update(+id, updatePositionDto);
+    return this.positionService.update(+position_id, updatePositionDto);
   }
 }

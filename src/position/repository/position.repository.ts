@@ -26,12 +26,10 @@ export class PositionRepository {
     const updatedPosition = await this.positionModel.findOneAndUpdate(
       { position_id },
       {
-        $push: {
           amount: tempPosition.amount + updatePositionDto.amount,
           position_value:
             tempPosition.position_value +
             updatePositionDto.amount * currentPrice,
-        },
       },
       { new: true },
     );

@@ -23,7 +23,7 @@ export class PositionService {
     return `This action returns a #${id} position`;
   }
 
-  update(id: number, updatePositionDto: UpdatePositionDto) {
-    return `This action updates a #${id} position`;
+  async update(position_id: number, updatePositionDto: UpdatePositionDto) {
+    return (await this.positionRepository.update(position_id, updatePositionDto));
   }
 }
