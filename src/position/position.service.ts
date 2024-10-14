@@ -19,13 +19,16 @@ export class PositionService {
   async init() {
     const wsProvider = new WsProvider('wss://your-node-address');
     this.api = await ApiPromise.create({ provider: wsProvider });
+
+    const abi = require('./your_contract_metadata.json');  // Replace with the path to your contract's metadata JSON
+
+    this.contract = new ContractPromise(this.api, abi, this.contractAddress)
   }
 
   async create(createPositionDto: CreatePositionDto) {
     const contractAddress = 'your_contract_address';
-    const contract = await this.api.contract.at(contractAddress);
 
-    const { gasConsumed, result } = await contract.tx.openPosition(
+    await this.contract.tx.open_position(
       { value: 0 },
       createPositionDto.token,
       createPositionDto.amount,
@@ -33,12 +36,6 @@ export class PositionService {
       createPositionDto.leverage,
       createPositionDto.user,
     );
-
-    if (result.isOk) {
-      console.log(`Position opened with gas used: ${gasConsumed}`);
-    } else {
-      console.error(`Failed to open position`);
-    }
 
     return (await this.positionRepository.create(createPositionDto)).toObject();
   }
