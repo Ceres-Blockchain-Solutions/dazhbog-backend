@@ -30,9 +30,9 @@ export class PositionController {
     return this.positionService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.positionService.findOne(+id);
+  @Get('/get-position:position_id')
+  findOne(@Param('position_id') position_id: number) {
+    return this.positionService.findOne(+position_id);
   }
 
   @Patch('/update-position:position_id')

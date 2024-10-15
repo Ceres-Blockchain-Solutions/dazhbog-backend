@@ -17,25 +17,23 @@ export class PositionService {
   }
 
   async init() {
-    const wsProvider = new WsProvider('wss://your-node-address');
-    this.api = await ApiPromise.create({ provider: wsProvider });
+    // const wsProvider = new WsProvider('wss://your-node-address');
+    // this.api = await ApiPromise.create({ provider: wsProvider });
 
-    const abi = require('./your_contract_metadata.json');  // Replace with the path to your contract's metadata JSON
+    // const abi = require('./your_contract_metadata.json');  // Replace with the path to your contract's metadata JSON
 
-    this.contract = new ContractPromise(this.api, abi, this.contractAddress)
+    // this.contract = new ContractPromise(this.api, abi, this.contractAddress)
   }
 
   async create(createPositionDto: CreatePositionDto) {
-    const contractAddress = 'your_contract_address';
-
-    await this.contract.tx.open_position(
-      { value: 0 },
-      createPositionDto.token,
-      createPositionDto.amount,
-      createPositionDto.position_type,
-      createPositionDto.leverage,
-      createPositionDto.user,
-    );
+    // await this.contract.tx.open_position(
+    //   { value: 0 },
+    //   createPositionDto.token,
+    //   createPositionDto.amount,
+    //   createPositionDto.position_type,
+    //   createPositionDto.leverage,
+    //   createPositionDto.user,
+    // );
 
     return (await this.positionRepository.create(createPositionDto)).toObject();
   }
@@ -48,8 +46,8 @@ export class PositionService {
     return `This action returns all position`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} position`;
+  async findOne(position_id: number) {
+    return await this.positionRepository.findOne(position_id);
   }
 
   async update(position_id: number, updatePositionDto: UpdatePositionDto) {

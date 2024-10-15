@@ -52,6 +52,10 @@ export class PositionRepository {
     return updatedPosition;
   }
 
+  async findOne(position_id: number) {
+    return await this.positionModel.findOne({position_id});
+  }
+
   async delete(position_id: number) {
     return await this.positionModel.findOneAndDelete({ position_id });
   }
