@@ -42,8 +42,8 @@ export class PositionService {
     return await this.positionRepository.delete(position_id);
   }
 
-  findAll() {
-    return `This action returns all position`;
+  async findAll() {
+    return await this.positionRepository.findAll();
   }
 
   async findOne(position_id: number) {
