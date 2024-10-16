@@ -4,29 +4,41 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 import { CreatePositionDto } from './dto/create-position.dto';
 import { UpdatePositionDto } from './dto/update-position.dto';
 import { PositionRepository } from './repository/position.repository';
-import { ApiPromise, WsProvider } from '@polkadot/api';
+import { ApiPromise, WsProvider, Keyring } from '@polkadot/api';
 import { ContractPromise } from '@polkadot/api-contract';
 import { BN } from '@polkadot/util';
 import axios from 'axios';
+import contractAbi from "./utils/abis/oracle.json";
 
+const contractAddress = '16WNTZoQuUAEac5ou1R5xCX944B8WhoL4aDxoVaVWWTwjcWJ';
 @Injectable()
 export class PositionService {
   private readonly baseUrl = 'https://api.binance.com';
 
-  private readonly wsProvider = new WsProvider('ws://127.0.0.1:9944'); // Replace with your Substrate node
+  private readonly wsProvider = new WsProvider("wss://rpc1.paseo.popnetwork.xyz"); // Replace with your Substrate node
   private api: ApiPromise;
-  private contractAddress = '<Your_Oracle_Contract_Address>'; // Replace with your contract address
-  private contractAbi = '<Your_Oracle_Contract_ABI>'; // ABI of the Oracle contract
 
 
   constructor(private readonly positionRepository: PositionRepository) {}
 
   @Cron(CronExpression.EVERY_5_SECONDS)
   async updateOraclePrice() {
-    this.api = await ApiPromise.create({ provider: this.wsProvider });
-    const contract = new ContractPromise(this.api, this.contractAbi, this.contractAddress);
+    // this.api = await ApiPromise.create({ provider: this.wsProvider });
+    // const contract = new ContractPromise(this.api, contractAbi, contractAddress);
+    // console.log(contract);
+
+    // const keyring = new Keyring({ type: 'sr25519' });
+    // const signer = keyring.addFromUri('//Alice'); 
 
     const price = await this.getDotPrice();
+
+    // await contract.tx.changePrice(
+    //   {
+    //     gasLimit: -1,
+    //     value: 0,
+    //   },
+    //   new BN(price)
+    // ).signAndSend(signer);
 
     console.log(price);
   }
