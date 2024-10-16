@@ -11,15 +11,21 @@ import axios from 'axios';
 
 @Injectable()
 export class PositionService {
-  private api: ApiPromise;
-  private contract: ContractPromise;
-  private contractAddress: string = 'your_contract_address'; 
   private readonly baseUrl = 'https://api.binance.com';
+
+  private readonly wsProvider = new WsProvider('ws://127.0.0.1:9944'); // Replace with your Substrate node
+  private api: ApiPromise;
+  private contractAddress = '<Your_Oracle_Contract_Address>'; // Replace with your contract address
+  private contractAbi = '<Your_Oracle_Contract_ABI>'; // ABI of the Oracle contract
+
 
   constructor(private readonly positionRepository: PositionRepository) {}
 
   @Cron(CronExpression.EVERY_5_SECONDS)
   async updateOraclePrice() {
+    this.api = await ApiPromise.create({ provider: this.wsProvider });
+    const contract = new ContractPromise(this.api, this.contractAbi, this.contractAddress);
+
     const price = await this.getDotPrice();
 
     console.log(price);
