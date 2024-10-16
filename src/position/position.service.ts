@@ -1,28 +1,28 @@
 import { Injectable } from '@nestjs/common';
+import { Cron, CronExpression } from '@nestjs/schedule';
+
 import { CreatePositionDto } from './dto/create-position.dto';
 import { UpdatePositionDto } from './dto/update-position.dto';
 import { PositionRepository } from './repository/position.repository';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { ContractPromise } from '@polkadot/api-contract';
 import { BN } from '@polkadot/util';
+import axios from 'axios';
 
 @Injectable()
 export class PositionService {
   private api: ApiPromise;
   private contract: ContractPromise;
   private contractAddress: string = 'your_contract_address'; 
+  private readonly baseUrl = 'https://api.binance.com';
 
-  constructor(private readonly positionRepository: PositionRepository) {
-    this.init();
-  }
+  constructor(private readonly positionRepository: PositionRepository) {}
 
-  async init() {
-    // const wsProvider = new WsProvider('wss://your-node-address');
-    // this.api = await ApiPromise.create({ provider: wsProvider });
+  @Cron(CronExpression.EVERY_5_SECONDS)
+  async updateOraclePrice() {
+    const price = await this.getDotPrice();
 
-    // const abi = require('./your_contract_metadata.json');  // Replace with the path to your contract's metadata JSON
-
-    // this.contract = new ContractPromise(this.api, abi, this.contractAddress)
+    console.log(price);
   }
 
   async create(createPositionDto: CreatePositionDto) {
@@ -53,4 +53,19 @@ export class PositionService {
   async update(position_id: number, updatePositionDto: UpdatePositionDto) {
     return await this.positionRepository.update(position_id, updatePositionDto);
   }
+
+  async getDotPrice(): Promise<number> {
+    try {
+      const url = `${this.baseUrl}/api/v3/ticker/price?symbol=DOTUSDT`;
+      const response = await axios.get(url);
+      const price = parseFloat(response.data.price);
+
+      return price;
+    } catch (error) {
+      console.error('Error fetching price:', error.message);
+      throw error;
+    }
+  }
+
+
 }
