@@ -60,6 +60,25 @@ export class PositionRepository {
     return await this.positionModel.findOneAndDelete({ position_id });
   }
 
+  async findAllPositionByUser(user: string) {
+    const positions = await this.positionModel.find({
+      user,
+    });
+
+    if (!positions) {
+      throw new NotFoundException(`Position not found`);
+    }
+
+    return positions.map((ship) =>
+      ship.toObject({
+        transform(doc, ret) {
+          delete ret.__v;
+          delete ret._id;
+        },
+      }),
+    );
+  }
+
   async findAll(): Promise<Position[]> {
     const positions = await this.positionModel.find().exec();
     if (!positions) {
